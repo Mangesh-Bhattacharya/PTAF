@@ -1,0 +1,14 @@
+# PTAF Python dependencies
+# Scaffolding placeholder -- pin real versions as modules are implemented.
+
+# Core
+pyyaml
+click
+rich
+
+# Reporting
+jinja2
+
+# AI / analysis (add as ai_analysis/ modules are built out)
+# scikit-learn
+# pandas
