@@ -51,7 +51,9 @@ def check_rule(path: pathlib.Path) -> RuleCheckResult:
         return RuleCheckResult(path=path, ok=False, errors=[f"YAML parse error: {exc}"])
 
     if not isinstance(data, dict):
-        return RuleCheckResult(path=path, ok=False, errors=["Rule root is not a mapping."])
+        return RuleCheckResult(
+            path=path, ok=False, errors=["Rule root is not a mapping."]
+        )
 
     for required in REQUIRED_FIELDS:
         if required not in data:
@@ -61,7 +63,9 @@ def check_rule(path: pathlib.Path) -> RuleCheckResult:
     if not technique_ids:
         errors.append("No attack.tXXXX tag found -- rule isn't mapped to ATT&CK.")
 
-    return RuleCheckResult(path=path, ok=not errors, errors=errors, technique_ids=technique_ids)
+    return RuleCheckResult(
+        path=path, ok=not errors, errors=errors, technique_ids=technique_ids
+    )
 
 
 def load_known_technique_ids() -> set[str]:
