@@ -1,0 +1,43 @@
+# Model selection / configuration for PTAF's AI-analysis module.
+#
+# This is scaffolding: it defines the shape a real config should take.
+# Prefer open-source, locally runnable models over hosted APIs so the
+# framework stays self-contained (see modules/ai_analysis/README.md).
+
+clustering:
+  # Groups similar findings/log events to help a human spot patterns
+  # instead of triaging every event individually.
+  enabled: true
+  algorithm: kmeans   # kmeans | dbscan
+  kmeans:
+    n_clusters: 8
+    random_state: 42
+  dbscan:
+    eps: 0.5
+    min_samples: 5
+  features:
+    - event_type
+    - host
+    - hour_of_day
+
+anomaly_detection:
+  enabled: false
+  algorithm: isolation_forest
+  isolation_forest:
+    n_estimators: 100
+    contamination: auto
+
+detection_tuning:
+  # Suggests threshold/filter changes for existing Sigma rules based on
+  # observed false-positive patterns. Not enabled by default -- this
+  # should only ever *suggest* changes for a human to review and apply.
+  enabled: false
+  min_observations_before_suggesting: 50
+
+explainability:
+  # Analysis output should say *why*, not just emit a score.
+  require_feature_attribution: true
+  top_n_features: 5
+
+logging:
+  level: INFO
