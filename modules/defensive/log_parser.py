@@ -73,16 +73,20 @@ def parse_sysmon_xml_event(event: dict[str, Any]) -> NormalizedEvent:
     }
     return NormalizedEvent(
         source="sysmon",
-        event_type=type_map.get(int(event_id), f"sysmon_event_{event_id}")
-        if event_id is not None
-        else "unknown",
+        event_type=(
+            type_map.get(int(event_id), f"sysmon_event_{event_id}")
+            if event_id is not None
+            else "unknown"
+        ),
         timestamp=event.get("UtcTime"),
         host=event.get("Computer"),
         raw=event,
     )
 
 
-def correlate_by_host(events: Iterable[NormalizedEvent]) -> dict[str, list[NormalizedEvent]]:
+def correlate_by_host(
+    events: Iterable[NormalizedEvent],
+) -> dict[str, list[NormalizedEvent]]:
     """Group normalized events by host -- a minimal building block for
     log correlation. Real correlation logic (time windows, process trees,
     identity linking) should build on top of this, not replace it.
