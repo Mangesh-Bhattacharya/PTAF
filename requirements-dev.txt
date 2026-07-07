@@ -1,0 +1,9 @@
+# Dev/test/lint tooling -- not required to run PTAF, only to develop it.
+pytest
+flake8
+black
+bandit
+
+# Optional: needed for modules/ai_analysis/clustering.py's KMeans path.
+# cluster_events_naive() works without this.
+scikit-learn
