@@ -34,11 +34,15 @@ def _hash_feature(value: Any, buckets: int = 256) -> int:
     return hash(str(value)) % buckets
 
 
-def featurize(records: Sequence[dict[str, Any]], feature_names: Sequence[str]) -> list[list[float]]:
+def featurize(
+    records: Sequence[dict[str, Any]], feature_names: Sequence[str]
+) -> list[list[float]]:
     """Turn a list of flat dict records into numeric feature vectors."""
     vectors: list[list[float]] = []
     for record in records:
-        vectors.append([float(_hash_feature(record.get(name))) for name in feature_names])
+        vectors.append(
+            [float(_hash_feature(record.get(name))) for name in feature_names]
+        )
     return vectors
 
 
@@ -112,7 +116,9 @@ def _summarize_clusters(
     results = []
     for cluster_id, indices in by_label.items():
         representative = indices[0]
-        top_features = {name: records[representative].get(name) for name in feature_names}
+        top_features = {
+            name: records[representative].get(name) for name in feature_names
+        }
         results.append(
             ClusterResult(
                 cluster_id=cluster_id,
