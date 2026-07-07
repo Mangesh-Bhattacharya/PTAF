@@ -1,5 +1,8 @@
 # Purple Team Automation Framework (PTAF)
 
+[![CI](https://github.com/Mangesh-Bhattacharya/PTAF/actions/workflows/ci.yml/badge.svg)](https://github.com/Mangesh-Bhattacharya/PTAF/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 **AI-Driven Offensive + Defensive Security Automation for Mid-Level Practitioners**
 
 Author: [Mangesh Bhattacharya](https://github.com/Mangesh-Bhattacharya) — Cybersecurity Practitioner | MITS-AI Graduate (Ontario Tech University) | Threat Intelligence & Automation
@@ -75,7 +78,7 @@ Contributors are encouraged to:
 - Submit Purple Team exercises
 - Share defensive tuning strategies
 
-## Installation (Kali Linux)
+## Installation (Kali Linux / Ubuntu / WSL)
 
 ```bash
 git clone https://github.com/Mangesh-Bhattacharya/PTAF.git
@@ -84,26 +87,66 @@ sudo chmod +x install.sh
 ./install.sh
 ```
 
+`install.sh` creates a virtual environment and installs `requirements.txt`.
+For development (tests/lint), also install `requirements-dev.txt`:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
 ## Usage Example
 
 ```bash
-ptaf --simulate lateral_movement --analyze --report
+# Run the offensive simulation stubs and print structured findings
+python -m modules.offensive.emulation
+
+# Check which simulated techniques currently have no detection rule
+python -m modules.defensive.validate_detections
+
+# Run the test suite
+pytest
 ```
 
-> Note: PTAF is in early scaffolding. Modules above describe the intended architecture and are being implemented incrementally — see [Contributing](#contributing) to help build them out.
+See [docs/example_workflow.md](docs/example_workflow.md) for a full walkthrough, and [docs/architecture.md](docs/architecture.md) for how the modules fit together (with a diagram).
+
+> **Status note:** PTAF is early-stage scaffolding. The capabilities listed
+> above describe the intended architecture; each module currently ships
+> the interface plus one or two fully-working, safe example
+> implementations (not a complete, production SIEM/EDR/ML integration).
+> See [Contributing](#contributing) to help build it out.
 
 ## Repository Structure
 
 ```
 PTAF/
-├── install.sh              # Setup script
-├── requirements.txt        # Python dependencies
+├── install.sh               # Setup script
+├── requirements.txt         # Runtime Python dependencies
+├── requirements-dev.txt     # Test/lint tooling
+├── pytest.ini
 ├── modules/
-│   ├── offensive/          # Safe, controlled simulation modules
-│   ├── defensive/          # Detection & defensive automation modules
-│   └── ai_analysis/        # AI-driven analysis plugins
-└── docs/                   # Documentation and Purple Team exercises
+│   ├── offensive/           # Safe, controlled simulation modules
+│   │   ├── emulation.py
+│   │   └── attack_techniques.yaml
+│   ├── defensive/           # Detection & defensive automation modules
+│   │   ├── log_parser.py
+│   │   ├── validate_detections.py
+│   │   └── detection_rules/
+│   └── ai_analysis/         # AI-driven analysis plugins
+│       ├── clustering.py
+│       └── config.yaml
+├── tests/                   # pytest suite
+├── docs/                    # Architecture + example workflow
+└── .github/                 # Issue/PR templates, CI workflow
 ```
+
+## Documentation
+
+- [docs/architecture.md](docs/architecture.md) — how the modules fit together, with a diagram
+- [docs/example_workflow.md](docs/example_workflow.md) — a runnable, end-to-end walkthrough
+- Module READMEs: [offensive](modules/offensive/README.md), [defensive](modules/defensive/README.md), [ai_analysis](modules/ai_analysis/README.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md) — safety bar, dev setup, PR process
+- [SECURITY.md](SECURITY.md) — how to report a vulnerability
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ## Contributing
 
@@ -115,7 +158,7 @@ Contributions are welcome, including:
 - Documentation improvements
 - Purple Team exercises
 
-Open an issue or submit a pull request to get involved.
+Open an issue (bug report or feature request template) or submit a pull request using the PR template. See [CONTRIBUTING.md](CONTRIBUTING.md) for the safety bar offensive/defensive contributions must meet.
 
 ## About the Author
 
